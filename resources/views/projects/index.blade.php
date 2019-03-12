@@ -1,29 +1,27 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Projects</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <div class="wrap">
-        <h1 class="title">Projects</h1>
+@section('content')
+    
+    <header class="flex items-center mb-3 py-3">
+        <div class="flex justify-between w-full items-end">
+            <h2 class="text-grey text-sm font-normal">My Projects</h2>
 
-        <ul class="projects">
-            @forelse($projects as $project)
-                
-                <li>
-                    <a href="{{ $project->path() }}">
-                        {{ $project->title }}
-                    </a>
-                </li>
-                    
-            @empty
+            <a href="/projects/create" class="button">New Project</a>
+        </div>
+    </header>
 
-                <p>No projects found</p>
-            
-            @endforelse
-        </ul>
+    <div class="lg:flex lg:flex-wrap -mx-4">
+
+        @forelse($projects as $project)
+            <div class="p-4 lg:w-1/3">
+                @include('projects.card')
+            </div>
+        @empty
+
+            <p>No projects found</p>
+        
+        @endforelse
+
     </div>
 
-</body>
-</html>
+@endsection

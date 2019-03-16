@@ -35,7 +35,7 @@ class ProjectsTest extends TestCase
 
         $this->get('/projects/create')->assertStatus(200);
 
-        $this->post('/projects', $attributes)->assertRedirect('/projects');
+        $this->post('/projects', $attributes);
         $this->assertDatabaseHas('projects', $attributes);
 
         $this->get('/projects')->assertSee($attributes['title']);
@@ -55,7 +55,6 @@ class ProjectsTest extends TestCase
         // THEN we should see the title and description
         $this->get($project->path())
             ->assertSee($project->title);
-            // ->assertSee($project->description);
     }
 
     /** @test */

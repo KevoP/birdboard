@@ -34,7 +34,7 @@ class ProjectTasksTest extends TestCase
     {
         $this->signIn();
 
-        $project =  auth()->user()->projects()->create(
+        $project = auth()->user()->projects()->create(
             factory(Project::class)->raw()
         );
 
@@ -46,25 +46,29 @@ class ProjectTasksTest extends TestCase
     /** @test */
     public function only_the_owner_of_a_project_can_add_tasks()
     {
-        $project = factory('App\Project')->create();
+        // $this->withoutExceptionHandling();
 
         $this->signIn();
 
-        $this->post($project->path() . '/tasks', ['body' => 'new test task'])
+        $project = factory('App\Project')->create();
+
+        $this->post($project->path() . '/tasks', ['body' => 'test task'])
             ->assertStatus(403);
 
-        $this->assertDatabaseMissing('tasks', ['body' => 'new test task']);
+        $this->assertDatabaseMissing('tasks', ['body' => 'test task']);
     }
 
     /** @test */
     public function only_the_owner_of_a_project_can_update_tasks()
     {
+
+        // $this->withoutExceptionHandling();
+        $this->signIn();
+
         $project = factory('App\Project')->create();
         $task = $project->addTask('test task');
 
-        $this->signIn();
-
-        $this->patch($task->path(), ['body' => 'patched'])
+        $this->patch($project->tasks[0]->path(), ['body' => 'patched'])
             ->assertStatus(403);
 
         $this->assertDatabaseMissing('tasks', ['body' => 'patched']);
